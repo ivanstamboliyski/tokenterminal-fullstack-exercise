@@ -108,6 +108,13 @@
   margin-left: 0.5rem;
 }
 
+.table,
+.row,
+.column {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
 @media (max-width: 600px) {
   .grid {
     width: 100%;
