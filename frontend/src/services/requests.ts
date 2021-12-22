@@ -46,3 +46,19 @@ export const createWarning = async (
     console.log('Cannot create warning for this project!'); // TO REFACTOR
   }
 };
+
+export const getProjectWarning = async (
+  projectId: string,
+  setOpenWarning: Dispatch<SetStateAction<boolean>>
+) => {
+  try {
+    const response = await fetch(`${url}/projects/${projectId}/warnings`);
+    const data = await response.json();
+
+    if (!data.error) {
+      setOpenWarning(true);
+    }
+  } catch (error) {
+    console.log('Cannot create warning for this project!'); // TO REFACTOR
+  }
+};

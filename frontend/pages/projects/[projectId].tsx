@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react';
 import { IProject, IWarning } from '../../src/common/interfaces';
-import { createWarning, getProject } from '../../src/services/requests';
+import { createWarning, getProject, getProjectWarning } from '../../src/services/requests';
 import styles from '../../styles/Home.module.css'
 
 const Project = () => {
@@ -12,6 +12,7 @@ const Project = () => {
     tvl: null,
   });
   const [openForm, setOpenForm] = useState(false);
+  const [openWarning, setOpenWarning] = useState(false);
   const [warning, setWarning] = useState<IWarning>({
     title: '',
     text: '',
@@ -23,6 +24,16 @@ const Project = () => {
   useEffect(() => {
     getProject(projectId as string, setProject);
   }, [projectId]);
+
+  useEffect(() => {
+    getProjectWarning(projectId as string, setOpenWarning);
+  }, [projectId]);
+
+  useEffect(() => {
+    if (warning.title.length > 0) {
+      createWarning(projectId as string, warning, setOpenForm);
+    }
+  }, [warning]);
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -38,12 +49,6 @@ const Project = () => {
 
   };
 
-  useEffect(() => {
-    if (warning.title.length > 0) {
-      createWarning(projectId as string, warning, setOpenForm);
-    }
-  }, [warning]);
-
   return (
     <>
       {
@@ -57,6 +62,17 @@ const Project = () => {
               <h3>Name: {project.name}</h3>
               <h3>Price: {project.price}</h3>
               <h3>TVL: {project.tvl}</h3>
+            </div>
+            <div
+              className={styles.warning}
+              style={{ display: openWarning ? 'block' : 'none' }}
+            >
+              <h3 style={{ textAlign: 'center' }}>Warning</h3>
+              <p
+                style={{ textAlign: 'center' }}
+              >
+                This project has missing fields: {Object.entries(project).filter(x => !x[1]).map(x => x[0]).join(', ')}
+              </p>
             </div>
             <button
               style={{ width: 150, height: 50, margin: 'auto' }}
