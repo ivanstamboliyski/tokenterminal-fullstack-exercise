@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react';
-import { IProject } from '../../src/common/interfaces';
-import { getProject } from '../../src/services/requests';
+import { IProject, IWarning } from '../../src/common/interfaces';
+import { createWarning, getProject } from '../../src/services/requests';
 import styles from '../../styles/Home.module.css'
 
 const Project = () => {
@@ -11,6 +11,11 @@ const Project = () => {
     price: null,
     tvl: null,
   });
+  const [openForm, setOpenForm] = useState(false);
+  const [warning, setWarning] = useState<IWarning>({
+    title: '',
+    text: '',
+  });
 
   const router = useRouter();
   const { projectId } = router.query;
@@ -18,6 +23,26 @@ const Project = () => {
   useEffect(() => {
     getProject(projectId as string, setProject);
   }, [projectId]);
+
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const warnTitle = formData.get('title');
+    const warnText = formData.get('content');
+
+    setWarning({
+      title: warnTitle as string,
+      text: warnText as string,
+    });
+
+  };
+
+  useEffect(() => {
+    if (warning.title.length > 0) {
+      createWarning(projectId as string, warning, setOpenForm);
+    }
+  }, [warning]);
 
   return (
     <>
@@ -33,12 +58,20 @@ const Project = () => {
               <h3>Price: {project.price}</h3>
               <h3>TVL: {project.tvl}</h3>
             </div>
-            <button style={{ width: 150, height: 50, margin: 'auto' }}>Create warning</button>
-            <form action="/action_page.php">
-              <label htmlFor="title">First name:</label>
-              <input type="text" id="title" name="title" value="" /><br></br>
-              <label htmlFor="content">Last name:</label>
-              <input type="text" id="content" name="content" value="" /><br></br>
+            <button
+              style={{ width: 150, height: 50, margin: 'auto' }}
+              onClick={() => setOpenForm(true)}
+            >Create warning
+            </button>
+            <form
+              action=""
+              style={{ display: openForm ? 'block' : 'none' }}
+              onSubmit={(e) => handleFormSubmit(e)}
+            >
+              <label htmlFor="title">Title:</label>
+              <input type="text" id="title" name="title" /><br></br>
+              <label htmlFor="content">Content:</label>
+              <input type="text" id="content" name="content" /><br></br>
               <input type="submit" value="Submit" />
             </form>
           </div>

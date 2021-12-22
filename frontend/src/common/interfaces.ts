@@ -6,12 +6,10 @@ export interface IProject {
     tvl: number | null,
 }
 
-// export interface IFilteredProject {
-//     name: string,
-//     projectId: string,
-//     price: number,
-//     tvl: number,
-// }
+export interface IWarning {
+    title: string,
+    text: string,
+}
 
 export interface IOrder {
     asc: number,
