@@ -1,37 +1,22 @@
 import { useEffect, useState } from "react";
+import { getProjects } from "../src/services/requests";
 import styles from '../styles/Home.module.css'
+import { IProject } from '../src/common/interfaces';
 
 const Projects = () => {
 
-  const [projects, setProjects] = useState([]);
+  const [projects, setProjects] = useState<IProject[]>([]);
 
   useEffect(() => {
-
-    const getProjects = async () => {
-
-      const projectsUrl = 'http://localhost:3001/projects';
-
-      try {
-        const response = await fetch(projectsUrl);
-        const data = await response.json();
-        setProjects(data.projects);
-
-      } catch (error) {
-
-      }
-    };
-
-    getProjects();
-
+    getProjects(setProjects);
   }, []);
 
   return (
     <>
       {
         !projects.length ?
-          <h3>Loading projects...</h3> :
-          projects.length &&
-          < table className={styles.table} >
+          <h1 className={styles.loader}>Loading projects...</h1> :
+          <table className={styles.table} >
             <thead className={styles.table}>
               <th className={styles.table}>
                 Project

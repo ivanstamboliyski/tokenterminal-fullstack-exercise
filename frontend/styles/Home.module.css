@@ -108,11 +108,24 @@
   margin-left: 0.5rem;
 }
 
-.table,
-.row,
-.column {
+.table
+ {
   border: 1px solid black;
   border-collapse: collapse;
+  margin-top: 35px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  padding: 10px;
+  table-layout: fixed
+}
+
+.loader {
+  margin-top: 35px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  padding: 10px;
 }
 
 @media (max-width: 600px) {
