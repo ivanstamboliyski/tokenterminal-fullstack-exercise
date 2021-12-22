@@ -26,3 +26,20 @@ export const getProject = async (projectId: string, setProject: Dispatch<SetStat
         console.log('Cannot fetch this project!'); // TO REFACTOR
     }
 };
+
+// export const createWarning = async (projectId: string, body) => {
+
+//     try {
+//         const response = await fetch(`${url}/projects/${projectId}/warnings`, {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify(),
+//         });
+//         const data = await response.json();
+
+//     } catch (error) {
+//         console.log('Cannot create warning for this project!'); // TO REFACTOR
+//     }
+// };
