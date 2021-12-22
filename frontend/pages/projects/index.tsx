@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
-import { getProjects } from "../src/services/requests";
-import styles from '../styles/Home.module.css'
-import { IProject } from '../src/common/interfaces';
-import { findProject } from "../src/common/helpers";
+import { getAllProjects } from "../../src/services/requests";
+import styles from '../../styles/Home.module.css'
+import { IProject } from '../../src/common/interfaces';
+import { findProject } from "../../src/common/helpers";
+import Link from 'next/link'
 
-const Projects = () => {
+const AllProjects = () => {
 
   const [projects, setProjects] = useState<IProject[]>([]);
 
   useEffect(() => {
-    getProjects(setProjects);
+    getAllProjects(setProjects);
   }, []);
 
   return (
@@ -50,17 +51,19 @@ const Projects = () => {
               <tbody>
                 {
                   projects.map(({ name, projectId, price, tvl }) => (
-                    <tr key={projectId} className={styles.table}>
-                      <td className={styles.table}>
-                        {name}
-                      </td>
-                      <td className={styles.table}>
-                        {price}
-                      </td>
-                      <td className={styles.table}>
-                        {tvl ? tvl : 'not available'}
-                      </td>
-                    </tr>
+                    <Link key={projectId} href={`/projects/${projectId}`} passHref>
+                      <tr className={styles.table}>
+                        <td className={styles.table}>
+                          {name}
+                        </td>
+                        <td className={styles.table}>
+                          {price}
+                        </td>
+                        <td className={styles.table}>
+                          {tvl ? tvl : 'not available'}
+                        </td>
+                      </tr>
+                    </Link>
                   ))
                 }
               </tbody>
@@ -71,4 +74,4 @@ const Projects = () => {
   );
 };
 
-export default Projects;
+export default AllProjects;
